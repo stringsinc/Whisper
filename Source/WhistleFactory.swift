@@ -96,7 +96,7 @@ open class WhistleFactory: UIViewController {
     setupWindow()
 
     let labelWidth = UIScreen.main.bounds.width
-    let defaultHeight = titleLabelHeight
+    let defaultHeight = CGFloat(20.0)
 
     if let text = titleLabel.text {
       let neededDimensions =
