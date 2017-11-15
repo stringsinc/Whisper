@@ -139,7 +139,7 @@ open class WhistleFactory: UIViewController {
 
     let initialOrigin = whistleWindow.frame.origin.y
     whistleWindow.frame.origin.y = initialOrigin - titleLabelHeight
-    whistleWindow.isHidden = false
+    whistleWindow.isHidden = false  // stringsinc: this makes it so showing the whistle does not also dismiss the keyboard (in lieu of makeKeyAndVisible())
     UIView.animate(withDuration: 0.2, animations: {
       self.whistleWindow.frame.origin.y = initialOrigin
     })
