@@ -116,11 +116,31 @@ open class WhistleFactory: UIViewController {
       titleLabel.sizeToFit()
     }
 
-    whistleWindow.frame = CGRect(x: 0, y: view.safeYCoordinate,
+    // stringsinc: Don't use safeYCoordinate here because that puts the view below the status bar on regular phones and intrudes on the nav bar on iPhone X.
+    whistleWindow.frame = CGRect(x: 0, y: 0,
                                  width: labelWidth,
                                  height: titleLabelHeight)
+
+    // stringsinc: For iPhone X, expand the window height from the top of the screen to below the notch. The title label will be positioned just below the notch.
+    let iPhoneXThreshold = CGFloat(20) // This assumes anything greater than 20 must be iPhone X. 20 is the standard safe area for the status bar. The iPhone X usually has a safe area that is 44.
+    if #available(iOS 11.0, *) {
+        let topInset = view.safeAreaInsets.top
+        if topInset > iPhoneXThreshold {
+            whistleWindow.frame.size.height += topInset - 16 // reduced some because we know the notch doesn't take up the whole safe area.
+        }
+    }
+
     view.frame = whistleWindow.bounds
     titleLabel.frame = view.bounds
+
+    // stringsinc: For iPhone X, place the title label just below the notch. The window has been expanded already to accommodate the label.
+    if #available(iOS 11.0, *) {
+        let topInset = view.safeAreaInsets.top
+        if topInset > iPhoneXThreshold {
+            titleLabel.frame.origin.y += titleLabel.frame.size.height - titleLabelHeight
+            titleLabel.frame.size.height = titleLabelHeight
+        }
+    }
   }
 
   // MARK: - Movement methods
