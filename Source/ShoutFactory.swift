@@ -175,15 +175,30 @@ open class ShoutView: UIView {
       titleLabel.center.y = imageView.center.y - 2.5
     }
 
-    frame = CGRect(x: 0, y: safeYCoordinate,
+    // stringsinc: Use custom safeYCoordinate to position the view just underneath the status bar or the iPhone X notch.
+    frame = CGRect(x: 0, y: strings_safeYCoordinate,
                    width: totalWidth, height: internalHeight + Dimensions.touchOffset)
   }
+
+    // stringsinc: To be used instead of safeYCoordinate in order to position the view better.
+    var strings_safeYCoordinate: CGFloat {
+        // Overlap status bar expect on iPhone X:
+        var yCoordinate = CGFloat(0)
+        if #available(iOS 11.0, *) {
+            let iPhoneXThreshold = CGFloat(20) // This assumes anything greater than 20 must be iPhone X. 20 is the standard safe area for the status bar. The iPhone X usually has a safe area that is 44.
+            if safeAreaInsets.top > iPhoneXThreshold {
+                yCoordinate = safeAreaInsets.top - 8 // reduced some because we know the notch doesn't take up the whole safe area.
+            }
+        }
+        return yCoordinate
+    }
 
   // MARK: - Frame
 
   open override var frame: CGRect {
     didSet {
-      backgroundView.frame = CGRect(x: 0, y: safeYCoordinate,
+      // stringsinc: Use custom safeYCoordinate to position the view just underneath the status bar or the iPhone X notch.
+      backgroundView.frame = CGRect(x: 0, y: strings_safeYCoordinate,
                                     width: frame.size.width,
                                     height: frame.size.height - Dimensions.touchOffset)
 
