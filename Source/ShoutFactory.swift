@@ -151,6 +151,9 @@ open class ShoutView: UIView {
   public func setupFrames() {
     internalHeight = (UIApplication.shared.isStatusBarHidden ? 55 : 65)
 
+    // stringsinc: Whisper's code assume titleLabel is 1 line only and bakes that number into the internalHeight just calculated (55 or 65). But titleLabel can be multi-line, so subtract that height out. internalHeight will get adjusted later on once the labels are sized.
+    internalHeight -= 18
+
     let totalWidth = UIScreen.main.bounds.width
     let offset: CGFloat = UIApplication.shared.isStatusBarHidden ? 2.5 : 5
     let textOffsetX: CGFloat = imageView.image != nil ? Dimensions.textOffset : 18
@@ -160,6 +163,9 @@ open class ShoutView: UIView {
         $0.frame.size.width = totalWidth - imageSize - (Dimensions.imageOffset * 2)
         $0.sizeToFit()
     }
+
+    // stringsinc: Whisper's code assume titleLabel is 1 line only but they are not. Add in the height of titleLabel to accurately reflect the true size of the label.
+    internalHeight += titleLabel.frame.height + 2.5
 
     internalHeight += subtitleLabel.frame.height
 
