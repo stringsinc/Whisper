@@ -11,11 +11,8 @@ extension UIView {
 
     return y
   }
-<<<<<<< HEAD
-=======
 
   var isiPhoneX: Bool {
     return safeYCoordinate > 20
   }
->>>>>>> upstream/master
 }

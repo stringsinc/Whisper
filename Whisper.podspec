@@ -1,11 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "Whisper"
   s.summary          = "Whisper is a component that will make the task of display messages and in-app notifications simple."
-<<<<<<< HEAD
-  s.version          = "6.0.0"
-=======
   s.version          = "6.0.2"
->>>>>>> upstream/master
   s.homepage         = "https://github.com/hyperoslo/Whisper"
   s.license          = 'MIT'
   s.author           = { "Hyper Interaktiv AS" => "ios@hyper.no" }

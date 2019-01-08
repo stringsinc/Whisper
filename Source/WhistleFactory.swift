@@ -130,7 +130,6 @@ open class WhistleFactory: UIViewController {
       titleLabel.sizeToFit()
     }
 
-<<<<<<< HEAD
     // stringsinc: Don't use safeYCoordinate here because that puts the view below the status bar on regular phones and intrudes on the nav bar on iPhone X.
     whistleWindow.frame = CGRect(x: 0, y: 0,
                                  width: labelWidth,
@@ -156,19 +155,6 @@ open class WhistleFactory: UIViewController {
             titleLabel.frame.size.height = titleLabelHeight
         }
     }
-=======
-    whistleWindow.frame = CGRect(x: 0, y: 0,
-                                 width: labelWidth,
-                                 height: titleLabelHeight + Dimensions.notchHeight)
-    view.frame = whistleWindow.bounds
-
-    titleLabel.frame = CGRect(
-        x: 0.0,
-        y: Dimensions.notchHeight,
-        width: view.bounds.width,
-        height: titleLabelHeight
-    )
->>>>>>> upstream/master
   }
 
   // MARK: - Movement methods
@@ -186,13 +172,8 @@ open class WhistleFactory: UIViewController {
     }
 
     let initialOrigin = whistleWindow.frame.origin.y
-<<<<<<< HEAD
     whistleWindow.frame.origin.y = initialOrigin - titleLabelHeight
     whistleWindow.isHidden = false  // stringsinc: this makes it so showing the whistle does not also dismiss the keyboard (in lieu of makeKeyAndVisible())
-=======
-    whistleWindow.frame.origin.y = initialOrigin - titleLabelHeight - Dimensions.notchHeight
-    whistleWindow.isHidden = false
->>>>>>> upstream/master
     UIView.animate(withDuration: 0.2, animations: {
       self.whistleWindow.frame.origin.y = initialOrigin
     })
