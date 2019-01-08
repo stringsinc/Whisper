@@ -11,6 +11,17 @@ open class WhistleFactory: UIViewController {
 
   open lazy var whistleWindow: UIWindow = UIWindow()
 
+  public struct Dimensions {
+
+    static var notchHeight: CGFloat {
+      if UIApplication.shared.statusBarFrame.height > 20 {
+        return 32.0
+      } else {
+        return 0.0
+      }
+    }
+  }
+
   open lazy var titleLabelHeight = CGFloat(20.0)
 
   open lazy var titleLabel: UILabel = {
@@ -85,9 +96,12 @@ open class WhistleFactory: UIViewController {
   }
 
   func moveWindowToFront() {
-    let currentStatusBarStyle = UIApplication.shared.statusBarStyle
-    whistleWindow.windowLevel = UIWindowLevelStatusBar
-    UIApplication.shared.setStatusBarStyle(currentStatusBarStyle, animated: false)
+    whistleWindow.windowLevel = view.isiPhoneX ? UIWindowLevelNormal : UIWindowLevelStatusBar
+    setNeedsStatusBarAppearanceUpdate()
+  }
+
+  open override var preferredStatusBarStyle: UIStatusBarStyle {
+    return UIApplication.shared.statusBarStyle
   }
 
   open func setupFrames() {
@@ -116,6 +130,7 @@ open class WhistleFactory: UIViewController {
       titleLabel.sizeToFit()
     }
 
+<<<<<<< HEAD
     // stringsinc: Don't use safeYCoordinate here because that puts the view below the status bar on regular phones and intrudes on the nav bar on iPhone X.
     whistleWindow.frame = CGRect(x: 0, y: 0,
                                  width: labelWidth,
@@ -141,6 +156,19 @@ open class WhistleFactory: UIViewController {
             titleLabel.frame.size.height = titleLabelHeight
         }
     }
+=======
+    whistleWindow.frame = CGRect(x: 0, y: 0,
+                                 width: labelWidth,
+                                 height: titleLabelHeight + Dimensions.notchHeight)
+    view.frame = whistleWindow.bounds
+
+    titleLabel.frame = CGRect(
+        x: 0.0,
+        y: Dimensions.notchHeight,
+        width: view.bounds.width,
+        height: titleLabelHeight
+    )
+>>>>>>> upstream/master
   }
 
   // MARK: - Movement methods
@@ -158,15 +186,20 @@ open class WhistleFactory: UIViewController {
     }
 
     let initialOrigin = whistleWindow.frame.origin.y
+<<<<<<< HEAD
     whistleWindow.frame.origin.y = initialOrigin - titleLabelHeight
     whistleWindow.isHidden = false  // stringsinc: this makes it so showing the whistle does not also dismiss the keyboard (in lieu of makeKeyAndVisible())
+=======
+    whistleWindow.frame.origin.y = initialOrigin - titleLabelHeight - Dimensions.notchHeight
+    whistleWindow.isHidden = false
+>>>>>>> upstream/master
     UIView.animate(withDuration: 0.2, animations: {
       self.whistleWindow.frame.origin.y = initialOrigin
     })
   }
 
   public func hide() {
-    let finalOrigin = view.frame.origin.y - titleLabelHeight
+    let finalOrigin = view.frame.origin.y - titleLabelHeight - Dimensions.notchHeight
     UIView.animate(withDuration: 0.2, animations: {
       self.whistleWindow.frame.origin.y = finalOrigin
       }, completion: { _ in

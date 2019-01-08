@@ -181,8 +181,12 @@ open class ShoutView: UIView {
       titleLabel.center.y = imageView.center.y - 2.5
     }
 
+<<<<<<< HEAD
     // stringsinc: Use custom safeYCoordinate to position the view just underneath the status bar or the iPhone X notch.
     frame = CGRect(x: 0, y: strings_safeYCoordinate,
+=======
+    frame = CGRect(x: 0, y: safeYCoordinate,
+>>>>>>> upstream/master
                    width: totalWidth, height: internalHeight + Dimensions.touchOffset)
   }
 
@@ -203,8 +207,12 @@ open class ShoutView: UIView {
 
   open override var frame: CGRect {
     didSet {
+<<<<<<< HEAD
       // stringsinc: Use custom safeYCoordinate to position the view just underneath the status bar or the iPhone X notch.
       backgroundView.frame = CGRect(x: 0, y: strings_safeYCoordinate,
+=======
+      backgroundView.frame = CGRect(x: 0, y: safeYCoordinate,
+>>>>>>> upstream/master
                                     width: frame.size.width,
                                     height: frame.size.height - Dimensions.touchOffset)
 
