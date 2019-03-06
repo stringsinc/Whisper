@@ -269,10 +269,10 @@ open class ShoutView: UIView {
     } else {
       panGestureActive = false
       let height = translation.y < -5 || shouldSilent ? 0 : internalHeight
-      
+
       subtitleLabel.numberOfLines = 2
       subtitleLabel.sizeToFit()
-
+      
       UIView.animate(withDuration: 0.2, animations: {
         self.frame.size.height = height + Dimensions.touchOffset
       }, completion: { _ in
