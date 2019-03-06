@@ -137,13 +137,31 @@ open class ShoutView: UIView {
     setupFrames()
   }
 
-  open func shout(to controller: UIViewController) {
-    controller.view.addSubview(self)
-
+  private func updateLayout() {
     frame.size.height = 0
     UIView.animate(withDuration: 0.35, animations: {
       self.frame.size.height = self.internalHeight + Dimensions.touchOffset
+      self.layoutIfNeeded()
     })
+  }
+  // stringsinc: use autolayout constraints to show Shouts below the safe area lyout guide
+
+  private func setupConstraints(for controller: UIViewController) {
+    guard #available(iOS 11.0, *) else { return }
+    translatesAutoresizingMaskIntoConstraints = false
+    let safeLayoutGuide = controller.view.safeAreaLayoutGuide
+    topAnchor.constraint(equalToSystemSpacingBelow: safeLayoutGuide.topAnchor, multiplier: 1.0).isActive = true
+    heightAnchor.constraint(equalToConstant: internalHeight + Dimensions.touchOffset).isActive = true
+    widthAnchor.constraint(equalToConstant: controller.view.frame.width).isActive = true
+    centerXAnchor.constraint(equalTo: controller.view.centerXAnchor).isActive = true
+  }
+
+  // stringsinc: use autolayout constraints to show Shouts below the safe area lyout guide
+
+  open func shout(to controller: UIViewController) {
+    controller.view.addSubview(self)
+    setupConstraints(for: controller)
+    updateLayout()
   }
 
   // MARK: - Setup
@@ -181,30 +199,16 @@ open class ShoutView: UIView {
       titleLabel.center.y = imageView.center.y - 2.5
     }
 
-    // stringsinc: Use custom safeYCoordinate to position the view just underneath the status bar or the iPhone X notch.
-    frame = CGRect(x: 0, y: strings_safeYCoordinate,
+    frame = CGRect(x: 0, y: 0,
                    width: totalWidth, height: internalHeight + Dimensions.touchOffset)
+    layoutIfNeeded()
   }
-
-    // stringsinc: To be used instead of safeYCoordinate in order to position the view better.
-    var strings_safeYCoordinate: CGFloat {
-        // Overlap status bar expect on iPhone X:
-        var yCoordinate = CGFloat(0)
-        if #available(iOS 11.0, *) {
-            let iPhoneXThreshold = CGFloat(20) // This assumes anything greater than 20 must be iPhone X. 20 is the standard safe area for the status bar. The iPhone X usually has a safe area that is 44.
-            if safeAreaInsets.top > iPhoneXThreshold {
-                yCoordinate = safeAreaInsets.top - 8 // reduced some because we know the notch doesn't take up the whole safe area.
-            }
-        }
-        return yCoordinate
-    }
 
   // MARK: - Frame
 
   open override var frame: CGRect {
     didSet {
-      // stringsinc: Use custom safeYCoordinate to position the view just underneath the status bar or the iPhone X notch.
-      backgroundView.frame = CGRect(x: 0, y: strings_safeYCoordinate,
+      backgroundView.frame = CGRect(x: 0, y: 0,
                                     width: frame.size.width,
                                     height: frame.size.height - Dimensions.touchOffset)
 
