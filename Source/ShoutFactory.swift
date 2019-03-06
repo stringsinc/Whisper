@@ -247,7 +247,7 @@ open class ShoutView: UIView {
     announcement.action?()
     silent()
   }
-
+  
   @objc private func handlePanGestureRecognizer() {
     let translation = panGestureRecognizer.translation(in: self)
 
@@ -257,7 +257,7 @@ open class ShoutView: UIView {
       subtitleLabel.sizeToFit()
     } else if panGestureRecognizer.state == .changed {
       panGestureActive = true
-
+      
       let maxTranslation = subtitleLabel.bounds.size.height - subtitleLabelOriginalHeight
       
       if translation.y >= maxTranslation {
